@@ -33,8 +33,44 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
+#include<stddef.h>
+#include<malloc.h>
 
-int *spiral(int rows, int columns, int **input_array)
+void spiral_helper(int *elements, int **input_array, int top, int right, int bottom, int left)
 {
-	return NULL;
+	if (top == bottom && top == left && top == right){
+		*elements = input_array[top][top];
+		return;
+	}
+	if (bottom < top || left > right)
+		return;
+
+	int i;
+	for (i = left; i < right; i++)
+		*elements++ = input_array[top][i];
+	for (i = top; i < bottom; i++)
+		*elements++ = input_array[i][right];
+	if (top != bottom)
+		for (i = right; i > left; i--)
+			*elements++ = input_array[bottom][i];
+	else
+		*elements++ = input_array[bottom][right];
+
+
+	if (right != left)
+		for (i = bottom; i > top; i--)
+			*elements++ = input_array[i][left];
+	else
+		*elements++ = input_array[bottom][left];
+
+	spiral_helper(elements, input_array, top + 1, right - 1, bottom - 1, left + 1);
+}
+int *spiral(int rows, int cols, int **array)
+{
+	if (array == NULL)	return NULL;
+	if (rows <= 0 || cols <= 0)	return NULL;
+
+	int *result_array = (int*)malloc(rows*cols*sizeof(int));
+	spiral_helper(result_array, array, 0, cols - 1, rows - 1, 0);
+	return result_array;
 }
