@@ -54,6 +54,7 @@ void spiral_helper(int *elements, int **input_array, int top, int right, int bot
 		for (i = right; i > left; i--)
 			*elements++ = input_array[bottom][i];
 	else
+
 		*elements++ = input_array[bottom][right];
 
 
